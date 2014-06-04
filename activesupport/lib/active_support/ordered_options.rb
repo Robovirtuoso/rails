@@ -1,3 +1,5 @@
+require 'active_support/core_ext/hash/keys'
+
 module ActiveSupport
   # Usually key value pairs are handled something like this:
   #
@@ -54,7 +56,9 @@ module ActiveSupport
         # use the faster _get when dealing with OrderedOptions
         super() { |h,k| parent._get(k) }
       elsif parent
-        super() { |h,k| parent[k] }
+        # in the case that the parent has keys that are strings
+        # we want to convert them to symbols for consistency
+        super() { |h,k| parent.symbolize_keys[k] }
       else
         super()
       end

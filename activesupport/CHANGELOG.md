@@ -1,3 +1,15 @@
+*   Parent passed into `InheritableOptions` can now have string keys.
+    before:
+        opts = ActiveSupport::InheritableOptions.new({ 'foo' => 'bar' })
+        opts.foo
+        #=> nil
+    after:
+        opts = ActiveSupport::InheritableOptions.new({ 'foo' => 'bar' })
+        opts.foo
+        #=> 'bar'
+
+    *Alex Williams*
+
 *   Fixed precision error in NumberHelper when using Rationals.
 
     before:

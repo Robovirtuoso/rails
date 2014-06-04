@@ -60,6 +60,29 @@ class OrderedOptionsTest < ActiveSupport::TestCase
     assert child.foo
   end
 
+  def test_inheritable_options_is_indifferent_to_parent_keys
+    parent = { 'foo' => true, bar: true }
+
+    child = ActiveSupport::InheritableOptions.new(parent)
+    assert child.foo
+    assert child.bar
+
+    parent['baz'] = 'qux'
+
+    # InheritableOptions retains a reference to the parent
+    assert_equal 'qux', child.baz
+  end
+
+  def test_inheritable_options_wont_change_parent
+    parent = { 'foo' => 'bar' }
+    parent_copy = parent.dup
+
+    child = ActiveSupport::InheritableOptions.new(parent)
+
+    assert_equal 'bar', child.foo
+    assert_equal parent_copy, parent
+  end
+
   def test_inheritable_options_can_override_parent
     parent = ActiveSupport::OrderedOptions.new
     parent[:foo] = :bar
