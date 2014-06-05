@@ -1,4 +1,4 @@
-require 'active_support/core_ext/hash/keys'
+require 'active_support/core_ext/hash/indifferent_access'
 
 module ActiveSupport
   # Usually key value pairs are handled something like this:
@@ -58,7 +58,7 @@ module ActiveSupport
       elsif parent
         # in the case that the parent has keys that are strings
         # we want to convert them to symbols for consistency
-        super() { |h,k| parent.symbolize_keys[k] }
+        super() { |h,k| parent.with_indifferent_access[k] }
       else
         super()
       end
